@@ -32,7 +32,8 @@ class SpiderMain(object):
             return None
         return response.read()
         
-    def craw(slef,root_url):
+    def craw(slef,g):
+        root_url = g['url']
         html_content = slef.download(root_url)
         soup1 = BeautifulSoup(html_content, 'html.parser', from_encoding='utf-8')
         pages_num = soup1.find('div',class_="turnPageBottom").find('span',class_="pageOp").get_text()[1:3]
@@ -87,6 +88,8 @@ class SpiderMain(object):
                     for i in range(1,n):
                         node[keys[i].get_text()] = values[i].get_text()
                     graphDB.create(node)
+                    node_belongto_g = Relationship(node,'CALL',g)
+                        graphDB.create(node_belongto_g)
                 else:
                     print find_1
                     
@@ -97,11 +100,11 @@ class SpiderMain(object):
                 #res_data['changshang'] = title_node[4].get_text()
                 #res_data['wenhao'] = title_node[5].get_text()
                                                               
-    def get_category_urls(self):
+    def get_category(self):
         graphDB = getDB()
-        # find_c = graphDB.find("Category_111", property_key="comleted",property_value=0)
-        find_c = graphDB.data("MATCH (a:Category_111) where a.completed = 0 RETURN a.url")
-        return find_c
+        find_c = graphDB.find_one("Category_111", property_key="comleted",property_value=0)
+        #find_c = graphDB.data("MATCH (a:Category_111) where a.completed = 0 RETURN a.url")
+        return find_one
             
                
 
@@ -111,11 +114,7 @@ if __name__ == '__main__':
     obj_spider = SpiderMain()
     # 启动爬虫
     #
-    g = obj_spider.get_category_urls()
-    for i in range(0,2):
-        url = g[i]['a.url']
-        print url
-        obj_spider.craw(url)
-        graphDB = getDB()
-        find_c = graphDB.data("MATCH (a:Category_111) where a.url = %s SET completed = 1" % url)
+    g = obj_spider.get_category()
+    g['completed'] = 1
+    graphDB.push(g)
         
