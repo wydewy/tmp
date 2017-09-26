@@ -7,7 +7,7 @@ import urllib2
 from bs4 import BeautifulSoup
 
 #from neo4j.v1 import GraphDatabase, basic_auth
-from py2neo import Graph,Node,Relationship
+from py2neo import Graph,Node,Relationship,NodeSelector
 
 def getDB():
      return Graph(
@@ -100,9 +100,10 @@ class SpiderMain(object):
                 #res_data['changshang'] = title_node[4].get_text()
                 #res_data['wenhao'] = title_node[5].get_text()
                                                               
-    def get_category(self):
+    def get_categorys(self):
         graphDB = getDB()
-        find_one = graphDB.find_one("Category_111", property_key="comleted",property_value=0)
+        selector = NodeSelector(graphDB)
+        find_one = selector.select("Category_111",completed=0)
         #find_c = graphDB.data("MATCH (a:Category_111) where a.completed = 0 RETURN a.url")
         return find_one
             
@@ -114,7 +115,9 @@ if __name__ == '__main__':
     obj_spider = SpiderMain()
     # 启动爬虫
     #
-    g = obj_spider.get_category()
-    g['completed'] = 1
-    graphDB.push(g)
+    gs = list(obj_spider.get_categorys())
+    g = len(gs)>0?gs[0]:None
+    if g:
+        g['completed'] = 1
+        graphDB.push(g)
         
