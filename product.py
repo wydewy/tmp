@@ -116,8 +116,7 @@ if __name__ == '__main__':
     # 启动爬虫
     #
     gs = list(obj_spider.get_categorys())
-    g = len(gs)>0?gs[0]:None
-    if g:
-        g['completed'] = 1
-        graphDB.push(g)
+    if len(gs)>0:
+        gs[0]['completed'] = 1
+        graphDB.push(g[0])
         
