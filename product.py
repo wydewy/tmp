@@ -119,5 +119,6 @@ if __name__ == '__main__':
     gs = list(obj_spider.get_categorys())
     if len(gs)>0:
         gs[0]['completed'] = 1
-        graphDB.push(g[0])
+        graphDB.push(gs[0])
+        obj_spider.craw(gs[0])
         
