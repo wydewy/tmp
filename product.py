@@ -119,7 +119,7 @@ if __name__ == '__main__':
     #
     graphDB = getDB()
     gs = list(obj_spider.get_categorys())
-    for i in range(0,len(gs))
+    for i in range(0,len(gs)):
         gs[i]['completed'] = 1
         graphDB.push(gs[i])
         obj_spider.craw(gs[i])
