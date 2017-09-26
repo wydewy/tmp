@@ -88,8 +88,10 @@ class SpiderMain(object):
                     for i in range(1,n):
                         node[keys[i].get_text()] = values[i].get_text()
                     graphDB.create(node)
-                    node_belongto_g = Relationship(node,'CALL',g)
+                    node_belongto_g = Relationship(node,'相关药品',g)
                     graphDB.create(node_belongto_g)
+                    g_belongto_node = Relationship(g,'适用于',node)
+                    graphDB.create(g_belongto_node)
                 else:
                     print find_1
                     
