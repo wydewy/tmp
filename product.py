@@ -115,6 +115,7 @@ if __name__ == '__main__':
     obj_spider = SpiderMain()
     # 启动爬虫
     #
+    graphDB = getDB()
     gs = list(obj_spider.get_categorys())
     if len(gs)>0:
         gs[0]['completed'] = 1
