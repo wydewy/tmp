@@ -102,7 +102,7 @@ class SpiderMain(object):
                                                               
     def get_category(self):
         graphDB = getDB()
-        find_c = graphDB.find_one("Category_111", property_key="comleted",property_value=0)
+        find_one = graphDB.find_one("Category_111", property_key="comleted",property_value=0)
         #find_c = graphDB.data("MATCH (a:Category_111) where a.completed = 0 RETURN a.url")
         return find_one
             
