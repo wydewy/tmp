@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 import xlwt
 import xlrd
 from xlutils.copy import copy
-
+import pdb
 
 proxys=('111.155.116.249:8123',
         '182.92.242.11:80',
@@ -66,10 +66,13 @@ while num<10:
         time.sleep(1.5);
         html=getHtml(url)       
         time.sleep(2.5)
-        print "HTML READY"
-        soup=BeautifulSoup(html);
+        print html
+        soup=BeautifulSoup(html,"lxml");
+	print soup
         a=soup.select('td')[2].get_text().strip()
-        
+	print a
+        pdb.set_trace()
+
         if a==u'没有相关信息':
             print '404';
             num+=1;
@@ -90,7 +93,7 @@ while num<10:
         medic_number_remark=soup.select('td')[26].get_text().strip();
         medic_relateDB=soup.select('td')[28].get_text().strip();
         medic_other=soup.select('td')[32].get_text().strip();
-        '''
+       
         print medic_ratify
         print medic_name
         print medic_name_EN
@@ -106,8 +109,8 @@ while num<10:
         print medic_number_remark
         print medic_relateDB
         print medic_other
-        '''
-        rb=xlrd.open_workbook("medic1-10.xls")
+        
+        rb=xlrd.open_workbook("/home/vnique/xls/medic1-10.xls")
         wb=copy(rb)
         ws=wb.get_sheet(0)
         ws.write(count,0,num)
@@ -127,7 +130,7 @@ while num<10:
         ws.write(count,14,medic_relateDB)
         ws.write(count,15,medic_other)
               
-        wb.save("medic1-10.xls")
+        wb.save("/home/vnique/xls/medic1-10.xls")
         
         time.sleep(0.5)
     except BaseException:
